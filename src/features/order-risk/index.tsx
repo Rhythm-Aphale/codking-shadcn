@@ -7,6 +7,7 @@ import { Search } from '@/components/search'
 import { ThemeSwitch } from '@/components/theme-switch'
 import { Skeleton } from '@/components/ui/skeleton'
 import { SummaryCards } from './components/summary-cards'
+import { OrdersTable } from './components/orders-table'
 import { fetchOrders } from './data/orders-api'
 
 export function OrderRiskDashboard() {
@@ -37,13 +38,22 @@ export function OrderRiskDashboard() {
         </div>
 
         {isLoading ? (
-          <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
-            {Array.from({ length: 3 }).map((_, i) => (
-              <Skeleton key={i} className='h-[120px] rounded-xl' />
-            ))}
-          </div>
+          <>
+            <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
+              {Array.from({ length: 3 }).map((_, i) => (
+                <Skeleton key={i} className='h-[120px] rounded-xl' />
+              ))}
+            </div>
+            <Skeleton className='h-[400px] rounded-xl' />
+          </>
         ) : orders ? (
-          <SummaryCards orders={orders} />
+          <>
+            <SummaryCards orders={orders} />
+            <OrdersTable
+              data={orders}
+              onRowClick={() => {}}
+            />
+          </>
         ) : null}
       </Main>
     </>
