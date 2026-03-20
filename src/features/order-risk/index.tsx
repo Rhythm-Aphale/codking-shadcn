@@ -1,11 +1,20 @@
+import { useQuery } from '@tanstack/react-query'
 import { ConfigDrawer } from '@/components/config-drawer'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
 import { ProfileDropdown } from '@/components/profile-dropdown'
 import { Search } from '@/components/search'
 import { ThemeSwitch } from '@/components/theme-switch'
+import { Skeleton } from '@/components/ui/skeleton'
+import { SummaryCards } from './components/summary-cards'
+import { fetchOrders } from './data/orders-api'
 
 export function OrderRiskDashboard() {
+  const { data: orders, isLoading } = useQuery({
+    queryKey: ['orders'],
+    queryFn: fetchOrders,
+  })
+
   return (
     <>
       <Header fixed>
@@ -26,6 +35,16 @@ export function OrderRiskDashboard() {
             Monitor potentially risky orders and take actions.
           </p>
         </div>
+
+        {isLoading ? (
+          <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
+            {Array.from({ length: 3 }).map((_, i) => (
+              <Skeleton key={i} className='h-[120px] rounded-xl' />
+            ))}
+          </div>
+        ) : orders ? (
+          <SummaryCards orders={orders} />
+        ) : null}
       </Main>
     </>
   )
