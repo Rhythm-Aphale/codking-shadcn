@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { ConfigDrawer } from '@/components/config-drawer'
 import { Header } from '@/components/layout/header'
@@ -8,6 +9,8 @@ import { ThemeSwitch } from '@/components/theme-switch'
 import { Skeleton } from '@/components/ui/skeleton'
 import { SummaryCards } from './components/summary-cards'
 import { OrdersTable } from './components/orders-table'
+import { OrderDetailDrawer } from './components/order-detail-drawer'
+import { type OrderWithRisk } from './data/schema'
 import { fetchOrders } from './data/orders-api'
 
 export function OrderRiskDashboard() {
@@ -15,6 +18,14 @@ export function OrderRiskDashboard() {
     queryKey: ['orders'],
     queryFn: fetchOrders,
   })
+
+  const [selectedOrder, setSelectedOrder] = useState<OrderWithRisk | null>(null)
+  const [drawerOpen, setDrawerOpen] = useState(false)
+
+  const handleRowClick = (order: OrderWithRisk) => {
+    setSelectedOrder(order)
+    setDrawerOpen(true)
+  }
 
   return (
     <>
@@ -49,13 +60,16 @@ export function OrderRiskDashboard() {
         ) : orders ? (
           <>
             <SummaryCards orders={orders} />
-            <OrdersTable
-              data={orders}
-              onRowClick={() => {}}
-            />
+            <OrdersTable data={orders} onRowClick={handleRowClick} />
           </>
         ) : null}
       </Main>
+
+      <OrderDetailDrawer
+        order={selectedOrder}
+        open={drawerOpen}
+        onOpenChange={setDrawerOpen}
+      />
     </>
   )
 }
