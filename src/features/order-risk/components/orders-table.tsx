@@ -1,9 +1,8 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { getRouteApi } from '@tanstack/react-router'
 import {
   type SortingState,
   type VisibilityState,
-  type ColumnFiltersState,
-  type PaginationState,
   flexRender,
   getCoreRowModel,
   getFacetedRowModel,
@@ -14,6 +13,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import { cn } from '@/lib/utils'
+import { useTableUrlState } from '@/hooks/use-table-url-state'
 import {
   Table,
   TableBody,
@@ -27,6 +27,8 @@ import { type OrderWithRisk } from '../data/schema'
 import { riskLevels, orderStatuses } from '../data/data'
 import { ordersColumns as columns } from './orders-columns'
 
+const route = getRouteApi('/_authenticated/order-risk/')
+
 type OrdersTableProps = {
   data: OrderWithRisk[]
   onRowClick: (order: OrderWithRisk) => void
@@ -35,11 +37,25 @@ type OrdersTableProps = {
 export function OrdersTable({ data, onRowClick }: OrdersTableProps) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [globalFilter, setGlobalFilter] = useState('')
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
+
+  const {
+    globalFilter,
+    onGlobalFilterChange,
+    columnFilters,
+    onColumnFiltersChange,
+    pagination,
+    onPaginationChange,
+    ensurePageInRange,
+  } = useTableUrlState({
+    search: route.useSearch(),
+    navigate: route.useNavigate(),
+    pagination: { defaultPage: 1, defaultPageSize: 10 },
+    globalFilter: { enabled: true, key: 'filter' },
+    columnFilters: [
+      { columnId: 'risk_level', searchKey: 'risk_level', type: 'array' },
+      { columnId: 'order_status', searchKey: 'order_status', type: 'array' },
+      { columnId: 'city', searchKey: 'city', type: 'array' },
+    ],
   })
 
   const cities = useMemo(
@@ -64,9 +80,9 @@ export function OrdersTable({ data, onRowClick }: OrdersTableProps) {
     },
     onSortingChange: setSorting,
     onColumnVisibilityChange: setColumnVisibility,
-    onColumnFiltersChange: setColumnFilters,
-    onGlobalFilterChange: setGlobalFilter,
-    onPaginationChange: setPagination,
+    onColumnFiltersChange,
+    onGlobalFilterChange,
+    onPaginationChange,
     globalFilterFn: (row, _columnId, filterValue) => {
       const search = String(filterValue).toLowerCase()
       const orderId = String(row.getValue('order_id')).toLowerCase()
@@ -86,8 +102,18 @@ export function OrdersTable({ data, onRowClick }: OrdersTableProps) {
     getFacetedUniqueValues: getFacetedUniqueValues(),
   })
 
+  const pageCount = table.getPageCount()
+  useEffect(() => {
+    ensurePageInRange(pageCount)
+  }, [pageCount, ensurePageInRange])
+
   return (
-    <div className='flex flex-1 flex-col gap-4'>
+    <div
+      className={cn(
+        'max-sm:has-[div[role="toolbar"]]:mb-16',
+        'flex flex-1 flex-col gap-4'
+      )}
+    >
       <DataTableToolbar
         table={table}
         searchPlaceholder='Search by order ID, customer, or phone...'

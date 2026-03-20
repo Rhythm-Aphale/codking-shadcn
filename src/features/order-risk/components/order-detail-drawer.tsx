@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { toast } from 'sonner'
 import { KeyRound, CreditCard, ShieldCheck } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -45,6 +46,7 @@ export function OrderDetailDrawer({
 
   const handleAction = (action: string) => {
     setActions((prev) => ({ ...prev, [order.order_id]: action }))
+    toast.success(`${action} for order ${order.order_id}`)
   }
 
   const currentAction = actions[order.order_id]
