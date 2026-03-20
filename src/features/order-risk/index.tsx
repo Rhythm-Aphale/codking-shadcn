@@ -1,18 +1,18 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import { Skeleton } from '@/components/ui/skeleton'
 import { ConfigDrawer } from '@/components/config-drawer'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
 import { ProfileDropdown } from '@/components/profile-dropdown'
 import { Search } from '@/components/search'
 import { ThemeSwitch } from '@/components/theme-switch'
-import { Skeleton } from '@/components/ui/skeleton'
-import { SummaryCards } from './components/summary-cards'
-import { OrdersTable } from './components/orders-table'
 import { OrderDetailDrawer } from './components/order-detail-drawer'
+import { OrdersTable } from './components/orders-table'
 import { RiskCharts } from './components/risk-charts'
-import { type OrderWithRisk } from './data/schema'
+import { SummaryCards } from './components/summary-cards'
 import { fetchOrders } from './data/orders-api'
+import { type OrderWithRisk } from './data/schema'
 
 export function OrderRiskDashboard() {
   const { data: orders, isLoading } = useQuery({

@@ -23,8 +23,8 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
-import { type OrderWithRisk } from '../data/schema'
 import { riskLevels, orderStatuses } from '../data/data'
+import { type OrderWithRisk } from '../data/schema'
 import { ordersColumns as columns } from './orders-columns'
 
 const route = getRouteApi('/_authenticated/order-risk/')

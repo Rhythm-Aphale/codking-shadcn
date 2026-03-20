@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { toast } from 'sonner'
 import { KeyRound, CreditCard, ShieldCheck } from 'lucide-react'
+import { toast } from 'sonner'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
@@ -53,7 +53,7 @@ export function OrderDetailDrawer({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side='right' className='sm:max-w-md overflow-y-auto'>
+      <SheetContent side='right' className='overflow-y-auto sm:max-w-md'>
         <SheetHeader>
           <SheetTitle>Order {order.order_id}</SheetTitle>
           <SheetDescription>Order details and risk analysis</SheetDescription>
