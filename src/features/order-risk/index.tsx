@@ -10,6 +10,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { SummaryCards } from './components/summary-cards'
 import { OrdersTable } from './components/orders-table'
 import { OrderDetailDrawer } from './components/order-detail-drawer'
+import { RiskCharts } from './components/risk-charts'
 import { type OrderWithRisk } from './data/schema'
 import { fetchOrders } from './data/orders-api'
 
@@ -55,11 +56,13 @@ export function OrderRiskDashboard() {
                 <Skeleton key={i} className='h-[120px] rounded-xl' />
               ))}
             </div>
+            <Skeleton className='h-[300px] rounded-xl' />
             <Skeleton className='h-[400px] rounded-xl' />
           </>
         ) : orders ? (
           <>
             <SummaryCards orders={orders} />
+            <RiskCharts orders={orders} />
             <OrdersTable data={orders} onRowClick={handleRowClick} />
           </>
         ) : null}

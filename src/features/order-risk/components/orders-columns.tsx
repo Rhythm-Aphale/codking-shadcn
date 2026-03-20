@@ -19,12 +19,14 @@ export const ordersColumns: ColumnDef<OrderWithRisk>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Customer' />
     ),
+    meta: { className: 'ps-1', tdClassName: 'ps-4' },
   },
   {
     accessorKey: 'phone',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Phone' />
     ),
+    meta: { className: 'ps-1', tdClassName: 'ps-4' },
     enableSorting: false,
   },
   {
@@ -32,6 +34,7 @@ export const ordersColumns: ColumnDef<OrderWithRisk>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='City' />
     ),
+    meta: { className: 'ps-1', tdClassName: 'ps-4' },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))
     },
@@ -41,6 +44,7 @@ export const ordersColumns: ColumnDef<OrderWithRisk>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Order Value' />
     ),
+    meta: { className: 'ps-1', tdClassName: 'ps-4' },
     cell: ({ row }) => {
       const value = row.getValue<number>('order_value')
       return <span>₹{value.toLocaleString('en-IN')}</span>
@@ -51,6 +55,7 @@ export const ordersColumns: ColumnDef<OrderWithRisk>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Risk Score' />
     ),
+    meta: { className: 'ps-1', tdClassName: 'ps-4' },
     cell: ({ row }) => {
       const score = row.getValue<number>('risk_score')
       return <span>{score}%</span>
@@ -61,13 +66,14 @@ export const ordersColumns: ColumnDef<OrderWithRisk>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Status' />
     ),
+    meta: { className: 'ps-1', tdClassName: 'ps-4' },
     cell: ({ row }) => {
       const level = row.getValue<string>('risk_level')
       const variant =
         level === 'high'
           ? 'destructive'
           : level === 'medium'
-            ? 'secondary'
+            ? 'outline'
             : 'default'
       const label =
         level === 'high'
@@ -75,20 +81,7 @@ export const ordersColumns: ColumnDef<OrderWithRisk>[] = [
           : level === 'medium'
             ? 'Medium Risk'
             : 'Safe'
-      return (
-        <Badge
-          variant={variant}
-          className={
-            level === 'safe'
-              ? 'bg-green-500/15 text-green-700 dark:text-green-400 border-transparent'
-              : level === 'medium'
-                ? 'bg-yellow-500/15 text-yellow-700 dark:text-yellow-400 border-transparent'
-                : ''
-          }
-        >
-          {label}
-        </Badge>
-      )
+      return <Badge variant={variant}>{label}</Badge>
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))
@@ -99,6 +92,7 @@ export const ordersColumns: ColumnDef<OrderWithRisk>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Order Status' />
     ),
+    meta: { className: 'ps-1', tdClassName: 'ps-4' },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))
     },

@@ -31,18 +31,15 @@ export function OrderDetailDrawer({
   const riskBadge = {
     high: {
       label: 'High Risk',
-      className:
-        'bg-red-500/15 text-red-700 dark:text-red-400 border-transparent',
+      variant: 'destructive' as const,
     },
     medium: {
       label: 'Medium Risk',
-      className:
-        'bg-yellow-500/15 text-yellow-700 dark:text-yellow-400 border-transparent',
+      variant: 'outline' as const,
     },
     safe: {
       label: 'Safe',
-      className:
-        'bg-green-500/15 text-green-700 dark:text-green-400 border-transparent',
+      variant: 'default' as const,
     },
   }[order.risk_level]
 
@@ -117,7 +114,7 @@ export function OrderDetailDrawer({
               <span className='text-muted-foreground'>Risk Score</span>
               <span className='font-medium'>{order.risk_score}%</span>
               <span className='text-muted-foreground'>Risk Level</span>
-              <Badge className={riskBadge.className}>{riskBadge.label}</Badge>
+              <Badge variant={riskBadge.variant}>{riskBadge.label}</Badge>
             </div>
             <p className='text-xs text-muted-foreground'>
               Risk score is calculated as (COD orders / Total orders) x 100.

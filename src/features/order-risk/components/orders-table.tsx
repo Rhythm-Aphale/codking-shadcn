@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import {
   type SortingState,
   type VisibilityState,
@@ -42,10 +42,14 @@ export function OrdersTable({ data, onRowClick }: OrdersTableProps) {
     pageSize: 10,
   })
 
-  const cities = [...new Set(data.map((o) => o.city))].sort().map((city) => ({
-    label: city,
-    value: city,
-  }))
+  const cities = useMemo(
+    () =>
+      [...new Set(data.map((o) => o.city))].sort().map((city) => ({
+        label: city,
+        value: city,
+      })),
+    [data]
+  )
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
