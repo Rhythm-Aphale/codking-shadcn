@@ -12,6 +12,7 @@ import {
   Palette,
   ServerOff,
   Settings,
+  ShieldAlert,
   Wrench,
   UserCog,
   UserX,
@@ -56,6 +57,11 @@ export const sidebarData: SidebarData = {
           title: 'Dashboard',
           url: '/',
           icon: LayoutDashboard,
+        },
+        {
+          title: 'Order Risk Dashboard',
+          url: '/order-risk',
+          icon: ShieldAlert,
         },
         {
           title: 'Tasks',
